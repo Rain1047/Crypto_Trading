@@ -1,2 +1,2 @@
 # Crypto_Trading
-cryoto spot trading and contract. 
+> cryoto spot trading and contract. 
