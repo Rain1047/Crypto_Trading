@@ -33,9 +33,7 @@ class collector():
         )
         for symbol in tqdm(symbols):
             df = data[symbol]
-            df['Datatime'] = df.index
+            df['Datetime'] = df.index
             data_engine = create_engine('sqlite:///dataset/crypto_data.db')
             df.to_sql(symbol, con=data_engine, if_exists='replace',index=None)
 
-col = collector()
-col.gather_data()
