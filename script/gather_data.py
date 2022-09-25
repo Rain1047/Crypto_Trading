@@ -13,12 +13,16 @@ class collector():
     def gather_data(self):
         # 关闭警告
         pd.set_option('mode.chained_assignment', None)
+        # create engine
+        data_engine = create_engine('sqlite:///dataset/crypto_data.db')
         # crypto ticker list 
         s = Screener()
         data = s.get_screeners('all_cryptocurrencies_us', count=250)
         # data is in the quotes key
         dicts = data['all_cryptocurrencies_us']['quotes']
         symbols = [d['symbol'] for d in dicts]
+        symbols_df = pd.DataFrame(symbols, columns=['symbol'])
+        symbols_df.to_sql('ticker_list', con=data_engine, if_exists='replace',index=None)
         # symbols
         symbol_str = ''
         for symbol in symbols:
@@ -33,8 +37,8 @@ class collector():
         )
         for symbol in tqdm(symbols):
             df = data[symbol]
-            df['Datatime'] = df.index
-            data_engine = create_engine('sqlite:///dataset/crypto_data.db')
+            df['Datetime'] = df.index
+            df.sort_values(['Datetime'],inplace=True)
             df.to_sql(symbol, con=data_engine, if_exists='replace',index=None)
 
 col = collector()
