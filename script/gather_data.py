@@ -37,9 +37,15 @@ class collector():
         )
         for symbol in tqdm(symbols):
             df = data[symbol]
+# <<<<<<< HEAD
             df['Datetime'] = df.index
             df.sort_values(['Datetime'],inplace=True)
+# ||||||| fea4811
+            df['Datatime'] = df.index
+            data_engine = create_engine('sqlite:///dataset/crypto_data.db')
+# =======
+            df['Datetime'] = df.index
+            data_engine = create_engine('sqlite:///dataset/crypto_data.db')
+# >>>>>>> b91fd23e8a0a06c593293d07b3b35be89f055324
             df.to_sql(symbol, con=data_engine, if_exists='replace',index=None)
 
-col = collector()
-col.gather_data()
